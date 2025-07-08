@@ -94,7 +94,7 @@ app.use(adminRoutes);
 app.use('/', userRoutes)
 app.use('/', requestRoutes)
 
-app.get('/givex', async (req, res) => {
+app.get('/', async (req, res) => {
     const requests = await Request.find({}).limit(10).sort({ _id: -1 });
     res.render('givex/index', { requests });
 });
