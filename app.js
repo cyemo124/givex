@@ -49,7 +49,7 @@ const store = MongoStore.create({
     crypto: {
         secret: 'thisshouldbeabettersecret!'
     }
-}); 
+});
 
 store.on('error', function (e) {
     console.log('SESSION STORE ERROR', e)
@@ -109,8 +109,13 @@ app.use((err, req, res, next) => {
 });
 
 
+const http = require('http');
 
+const server = http.createServer(app);
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
-})
+server.keepAliveTimeout = 120000; // 120 seconds
+server.headersTimeout = 120000;
+
+server.listen(3000, () => {
+    console.log(`Server running on port ${3000}`);
+});
