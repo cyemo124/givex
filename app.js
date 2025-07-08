@@ -99,6 +99,11 @@ app.get('/', async (req, res) => {
     res.render('givex/index', { requests });
 });
 
+app.get('/givex', async (req, res) => {
+    const requests = await Request.find({}).limit(10).sort({ _id: -1 });
+    res.render('givex/index', { requests });
+});
+
 app.use((err, req, res, next) => {
     const statusCode = err.status || 500;
     if (process.env.NODE_ENV === 'production') {
