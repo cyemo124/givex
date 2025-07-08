@@ -1,0 +1,51 @@
+<% layout('layouts/boilerplate') %>
+
+    <h2 class="mb-4">Make a new request</h2>
+    <div class="container mt-5">
+        <form action="/new" method="POST" enctype="multipart/form-data">
+            <div class="col-6 offset-3">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" class="form-select" name="request[category]" required>
+                    <option value="">All Categories</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Education">Education</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Business">Business</option>
+                    <option value="Creative">Creative</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div class="mb-3 mt-2">
+                    <label class="form-label" for="title">Request Title</label>
+                    <input class="form-control" type="text" id="title" name="request[title]" placeholder="Request"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Image</label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" name="request[description]" id="description"
+                        placeholder="description" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="amount">Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="price-label">$</span>
+                        <input class="form-control" type="number" id="amount" name="request[amount]" placeholder="0.00"
+                            required>
+                    </div>
+                </div>
+                <button class="btn btn-success">Submit</button>
+            </div>
+        </form>
+
+        <p class="mt-3 text-center">
+            <a href="/request" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to requests
+            </a>
+        </p>
+
+
+    </div>

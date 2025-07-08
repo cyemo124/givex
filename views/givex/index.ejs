@@ -1,0 +1,147 @@
+<% layout('layouts/boilerplate') %>
+
+    <!-- Hero Section -->
+    <div class="text-center my-5">
+        <h1 class="display-4 fw-bold">Welcome to Givex</h1>
+        <p class="lead">A platform where generosity meets those in need.</p>
+    </div>
+
+    <!-- How It Works -->
+<section class="container text-center my-5">
+  <h2>How It Works</h2>
+  <div class="row mt-4">
+    <% 
+      // Define the steps for both anonymous and logged-in users
+      const steps = currentUser 
+        ? [
+            {
+              href: "/new",
+              icon: "bi-coin",
+              color: "text-success",
+              title: "Make a Request",
+              desc: "Need help? Post a request and get funded."
+            },
+            {
+              href: "/request",
+              icon: "bi-gift-fill",
+              color: "text-warning",
+              title: "Give & Impact",
+              desc: "Find someone to help and make a difference."
+            }
+          ]
+        : [
+            {
+              href: "/signup",
+              icon: "bi-person-plus-fill",
+              color: "text-primary",
+              title: "Sign Up",
+              desc: "Create an account as a giver or receiver."
+            },
+            {
+              href: "/new",
+              icon: "bi-coin",
+              color: "text-success",
+              title: "Make a Request",
+              desc: "Need help? Post a request and get funded."
+            },
+            {
+              href: "/request",
+              icon: "bi-gift-fill",
+              color: "text-warning",
+              title: "Give & Impact",
+              desc: "Find someone to help and make a difference."
+            }
+          ];
+    %>
+
+    <% 
+      // Determine column width based on how many steps there are
+      const colClass = `col-md-${12 / steps.length}`;
+    %>
+    <div class="row g-2 justify-content-center align-items-start mt-4">
+        <% steps.forEach(step => { %>
+
+        <!-- 🔸 2)  Only the column lives inside the loop -->
+        <div class="<%= colClass %>">
+            <a href="<%= step.href %>" 
+            class="text-decoration-none text-reset d-block h-100 text-center">
+            <i class="bi <%= step.icon %> display-4 <%= step.color %>"></i>
+            <h4 class="mt-2"><%= step.title %></h4>
+            <p><%= step.desc %></p>
+            </a>
+            </div>
+
+    <% }) %>
+  </div>
+</section>
+
+
+    <!-- 3D Rotating Carousel for Requests -->
+    <h2>People Who Need Your Help</h2>
+    <div class="carousel-container position-relative">
+        <div class="carousel" id="carousel">
+            <div class="banner">
+                <div class="slider" style="--quantity: 10">
+                    <% requests.forEach((req, index)=> { %>
+                        <div class="item carousel-item" style="--position: <%= index + 1 %>">
+                            <a href="/request/<%= req._id %>" class="text-decoration-none text-reset">
+                                <div class="card">
+                                    <img src="<%= req.images[0]?.url.replace('/upload/','/upload/w_300,h_200,c_fill,g_auto,q_auto:eco/') || 'default.jpg' %>" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= req.title %>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mb-4 mt-3">
+        <a href="/request" class="btn btn-outline-primary">See All Requests</a>
+    </div>
+
+
+
+    <!-- Success Stories -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center">Success Stories</h2>
+            <div class="row mt-4">
+                <!-- Story 1 -->
+                <div class="col-md-3">
+                    <blockquote class="blockquote">
+                        <p>"Thanks to Givex, I was able to pay my medical bills when I had nowhere else to turn!"</p>
+                        <footer class="blockquote-footer">Sarah M.</footer>
+                    </blockquote>
+                </div>
+                <!-- Story 2 -->
+                <div class="col-md-3">
+                    <blockquote class="blockquote">
+                        <p>"I gave a small amount, but seeing how much it helped someone made my day!"</p>
+                        <footer class="blockquote-footer">Daniel R.</footer>
+                    </blockquote>
+                </div>
+                <!-- Story 3 -->
+                <div class="col-md-3">
+                    <blockquote class="blockquote">
+                        <p>"With Givex's support, I was able to start my own business and make a better life for my
+                            family!"</p>
+                        <footer class="blockquote-footer">Emily K.</footer>
+                    </blockquote>
+                </div>
+                <!-- Story 4 -->
+                <div class="col-md-3">
+                    <blockquote class="blockquote">
+                        <p>"The generous donations I received helped me recover from a devastating natural disaster!"
+                        </p>
+                        <footer class="blockquote-footer">John B.</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>

@@ -1,0 +1,53 @@
+<% layout('layouts/boilerplate') %>
+  <div class="col-6 offset-3">
+    <div class="container my-5">
+      <a href="/request" class="btn btn-secondary mb-3">← Back to All Requests</a>
+
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% request.images.forEach((img, i)=>{ %>
+            <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+              <img src="<%= img.url.replace('/upload/','/upload/w_300,h_400,c_fill,g_auto,q_auto:eco/') %>" class="d-block w-100" alt="">
+            </div>
+            <% }) %>
+        </div>
+        <% if(request.images.length> 1) {%>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          <% } %>
+      </div>
+
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title">
+            <%= request.title %>
+          </h2>
+          <h5 class="text-muted">By: <%= request.firstName %>
+              <%= request.lastName %>
+          </h5>
+          <h6 class="text-muted">Category: <%= request.category %>
+          </h6>
+          <p class="card-text mt-3">
+            <%= request.description %>
+          </p>
+          <p><strong>Amount Needed:</strong> $<%= request.amount %>
+          </p>
+        </div>
+      </div>
+      <% const isOwner=currentUser && currentUser._id.toString()===request.author.toString(); const buttonText=isOwner
+        ? "View Progress" : "Donate" ; %>
+        <a href="/donate/<%= request._id %>">
+          <button class="btn btn-lg btn-success mt-3">
+            <%= buttonText %>
+          </button>
+        </a>
+    </div>
+  </div>

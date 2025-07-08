@@ -1,0 +1,104 @@
+<% layout('layouts/boilerplate') %>
+
+  <div class="container my-5">
+    <% if (currentUser && currentUser.role==='receiver' ) { %>
+      <div class="d-flex justify-content-center my-4">
+        <a href="/new" class="text-decoration-none" style="max-width: 300px; width: 100%;">
+          <div class="card text-center shadow-sm p-3 bg-light hover-shadow">
+            <h3 class="text-success mb-0">
+              <i class="bi bi-plus-circle-fill me-2"></i> Make a Request
+            </h3>
+          </div>
+        </a>
+      </div>
+      <% } %>
+
+        <% if (currentUser && currentUser.role==='donor' ) { %>
+          <h1 class="text-center mb-4">Browse Requests</h1>
+          <% } %>
+
+            <!-- Filter and Search Controls -->
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <select id="categoryFilter" class="form-select">
+                  <option value="">All Categories</option>
+                  <option value="medical">Medical</option>
+                  <option value="education">Education</option>
+                  <option value="housing">Housing</option>
+                  <option value="emergency">Emergency</option>
+                  <option value="business">Business</option>
+                  <option value="creative">Creative</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search requests...">
+              </div>
+            </div>
+
+            <% const categories=['medical', 'education' , 'business' , 'emergency' , 'creative' , 'other' , 'housing' ];
+              %>
+
+              <% for (let i=0; i < categories.length; i++) { const category=categories[i]; const
+                filtered=requests.filter(r=>
+                r.category.toLowerCase() === category);
+                if (filtered.length > 0) { %>
+
+                <div class="mb-4">
+                  <h4 class="text-capitalize">
+                    <%= category %>
+                  </h4>
+                  <div class="row flex-nowrap overflow-auto gap-3">
+                    <% filtered.forEach(request=> { %>
+                      <div class="col-md-4 request-card" style="min-width: 300px; max-width: 320px;"
+                        data-category="<%= request.category %>">
+                        <div class="card h-100">
+                          <div class="card-body">
+                            <h5 class="card-title">
+                              <%= request.title %>
+                            </h5>
+                            <p class="card-text">
+                              <%= request.description %>
+                            </p>
+                            <span class="badge bg-secondary text-capitalize">
+                              <%= request.category %>
+                            </span>
+                            <a href="/request/<%= request._id %>" class="btn btn-primary mt-3">View</a>
+                          </div>
+                        </div>
+                      </div>
+                      <% }) %>
+                  </div>
+                </div>
+
+                <% }} %>
+
+
+
+                  <script>
+                    const categoryFilter = document.getElementById('categoryFilter');
+                    const searchInput = document.getElementById('searchInput');
+                    const requestCards = document.querySelectorAll('.request-card');
+
+                    function filterRequests() {
+                      const category = categoryFilter.value.toLowerCase();
+                      const searchTerm = searchInput.value.toLowerCase();
+
+                      requestCards.forEach(card => {
+                        const cardCategory = card.dataset.category.toLowerCase();
+                        const cardText = card.innerText.toLowerCase();
+
+                        const matchesCategory = !category || cardCategory === category;
+                        const matchesSearch = cardText.includes(searchTerm);
+
+                        if (matchesCategory && matchesSearch) {
+                          card.style.display = 'block';
+                        } else {
+                          card.style.display = 'none';
+                        }
+                      });
+                    }
+
+                    categoryFilter.addEventListener('change', filterRequests);
+                    searchInput.addEventListener('input', filterRequests);
+                  </script>

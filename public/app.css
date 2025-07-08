@@ -1,0 +1,240 @@
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+.access {
+  width: 200px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  transition: all 0.4s ease;
+}
+
+.banner {
+  width: 100%;
+  height: 80vh;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner .slider {
+  position: absolute;
+  width: 200px;
+  height: 250px;
+  top: 10%;
+  left: calc(50% - 100px);
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  animation: autoRun 100s linear infinite;
+  z-index: 2;
+}
+
+@keyframes autoRun {
+  from {
+    transform: perspective(1000px) rotateX(-12deg) rotateY(0deg);
+  }
+
+  to {
+    transform: perspective(1000px) rotateX(-12deg) rotateY(360deg);
+  }
+}
+
+.banner .slider .item {
+  position: absolute;
+  inset: 0 0 0 0;
+  transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px);
+  transition: transform 0.5s ease;
+  /* Smooth transition */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner .slider .item .card {
+  width: 250px;
+  height: 300px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.banner .slider .item img {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+}
+
+.banner .slider .item .card .card-body {
+  padding: 10px;
+}
+
+.banner .slider .item .card {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.banner .slider .item .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 3;
+  transition: background-color 0.3s;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#prev {
+  left: 10px;
+}
+
+#next {
+  right: 10px;
+}
+
+.responsive-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.row.flex-nowrap {
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+
+
+@media (min-width: 768px) {
+  .responsive-img {
+    height: 250px;
+  }
+}
+
+@media (min-width: 992px) {
+  .responsive-img {
+    height: 300px;
+  }
+}
+
+
+
+@media screen and (max-width: 1023px) {
+  .banner {
+    width: 100%;
+    height: 70vh;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .banner .slider {
+    width: 160px;
+    height: 200px;
+    left: calc(50% - 80px);
+  }
+
+  .banner .slider .item {
+    transform:
+      rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px);
+  }
+
+  .banner .slider .item .card {
+    width: 180px;
+  }
+
+  .banner .content h1 {
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 10px 20px #000;
+    font-size: 7em;
+  }
+
+  .banner .content .author {
+    color: #fff;
+    padding: 20px;
+    text-shadow: 0 10px 20px #000;
+    z-index: 2;
+    max-width: unset;
+    width: 100%;
+    text-align: center;
+    padding: 0 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .banner {
+    width: 100%;
+    height: 55vh;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .banner .slider {
+    width: 140px;
+    height: 180px;
+    left: calc(50% - 70px);
+  }
+
+  .banner .slider .item {
+    transform:
+      rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(250px);
+    /* even smaller to prevent overlapping */
+  }
+
+  .banner .slider .item .card {
+    width: 150px;
+    height: 180px;
+  }
+
+  .banner .content h1 {
+    font-size: 5em;
+  }
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  max-width: 100%;
+}
+
+.btn-check:focus + .btn,
+.btn-check:checked + .btn:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}

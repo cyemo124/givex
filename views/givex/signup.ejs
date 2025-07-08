@@ -1,0 +1,135 @@
+<% layout('layouts/boilerplate') %>
+    <% const pageTitle="signup" ; %>
+        <div class="container d-flex justify-content-center align-items-center mb-5">
+            <div class="w-100" style="max-width: 400px;">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h1 class="text-center">Sign up</h1>
+                        <div class="card-body p-4">
+                            <h1>Create an account</h1>
+                            <form action="/signup" method="POST" novalidate class="validated-form"
+                                enctype="multipart/form-data">
+                                <div class="mb-3 text-center">
+                                    <label class="form-label d-block mb-2">Sign up as:</label>
+                                    <input type="radio" class="btn-check" name="role" id="donor" value="donor"
+                                        autocomplete="off" required>
+                                    <label class="btn btn-outline-primary me-2" for="donor">Donor</label>
+
+                                    <input type="radio" class="btn-check" name="role" id="receiver" value="receiver"
+                                        autocomplete="off" required>
+                                    <label class="btn btn-outline-primary" for="receiver">Receiver</label>
+
+                                    <div id="roleError" class="text-danger mt-2" style="display: none;">
+                                        Please select a role.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="username">Username</label>
+                                    <input class="form-control" type="text" name="username" id="username" required>
+                                    <div class="form-text" id="usernameFeedback"></div>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="password">Password</label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="password" name="password" id="password"
+                                            required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button"
+                                            data-target="password">
+                                            👁️
+                                        </button>
+                                    </div>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="password" name="confirmPassword"
+                                            id="confirmPassword" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button"
+                                            data-target="confirmPassword">
+                                            👁️
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" id="passwordMismatch">Passwords do not match.</div>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input class="form-control" type="email" name="email" id="email" required>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profileImage" class="form-label">Profile Picture (Optional)</label>
+                                    <input class="form-control" type="file" name="profileImage" accept="image/*" />
+                                </div>
+                                <button class="btn btn-primary btn-lg access w-100">Create Account</button>
+                            </form>
+                            <p class="mt-3 text-center">
+                                Already have an account? <a href="/login">Login here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Username check script -->
+        <script>
+            const usernameInput = document.getElementById('username');
+            const feedback = document.getElementById('usernameFeedback');
+            let timeout;
+
+            usernameInput.addEventListener('input', () => {
+                clearTimeout(timeout);
+                const username = usernameInput.value.trim();
+                feedback.textContent = '';
+                feedback.classList.remove('text-success', 'text-danger');
+
+                if (!username) return;
+
+                timeout = setTimeout(() => {
+                    fetch(`/check-username?username=${encodeURIComponent(username)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.available) {
+                                feedback.textContent = '✅ Username is available';
+                                feedback.classList.add('text-success');
+                            } else {
+                                feedback.textContent = '❌ Username is already taken';
+                                feedback.classList.add('text-danger');
+                            }
+                        });
+                }, 400);
+            });
+        </script>
+
+        <script>
+            const form = document.querySelector('form');
+            const roleInputs = document.querySelectorAll('input[name="role"]');
+            const roleError = document.getElementById('roleError');
+
+            form.addEventListener('submit', function (e) {
+                const oneChecked = Array.from(roleInputs).some(input => input.checked);
+                if (!oneChecked) {
+                    e.preventDefault();
+                    roleError.style.display = 'block';
+                } else {
+                    roleError.style.display = 'none';
+                }
+            });
+
+            roleInputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    roleError.style.display = 'none';
+                });
+            });
+        </script>

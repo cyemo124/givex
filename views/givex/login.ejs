@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+<% const pageTitle = "Login"; %>
+<div class="container  d-flex justify-content-center align-items-center">
+  <div class="w-100" style="max-width: 400px;">
+    <div class="card shadow">
+      <div class="card-body p-4">
+        <h1 class="text-center mb-4">Login</h1>
+        <form action="/login" method="POST" novalidate class="validated-form">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input class="form-control" type="text" name="username" id="username" required>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input class="form-control" type="password" name="password" id="password" required>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <button class="btn btn-primary w-100">Login</button>
+        </form>
+        <p class="mt-3 text-center">
+          Don't have an account? <a href="/signup">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
