@@ -42,14 +42,16 @@ app.use(mongoSanitize({
     replaceWith: '_'
 }))
 
+const sessionSecret = (process.env.SESSION_SECRET)
 
 const store = MongoStore.create({
-    mongoUrl: dbUrl,
+    client: mongoose.connection.getClient(),
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'thisshouldbeabettersecret!'
+        secret: sessionSecret
     }
 });
+
 
 store.on('error', function (e) {
     console.log('SESSION STORE ERROR', e)
@@ -57,8 +59,8 @@ store.on('error', function (e) {
 
 const sessionCongif = {
     store,
-    secret: 'thisshouldbeabettersecret!',
-    resave: 'false',
+    secret: sessionSecret,
+    resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
@@ -104,23 +106,27 @@ app.get('/givex', async (req, res) => {
     res.render('givex/index', { requests });
 });
 
-app.use((err, req, res, next) => {
-    const statusCode = err.status || 500;
-    if (process.env.NODE_ENV === 'production') {
-        return res.status(statusCode).render('error', { err: {} });
-    } else {
-        return res.status(statusCode).render('error', { err });
-    }
-});
+// app.use((err, req, res, next) => {
+//     const statusCode = err.status || 500;
+//     if (process.env.NODE_ENV === 'production') {
+//         return res.status(statusCode).render('error', { err: {} });
+//     } else {
+//         return res.status(statusCode).render('error', { err });
+//     }
+// });
 
 
-const http = require('http');
+// const http = require('http');
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-server.keepAliveTimeout = 120000; // 120 seconds
-server.headersTimeout = 120000;
+// server.keepAliveTimeout = 120000; // 120 seconds
+// server.headersTimeout = 120000;
 
-server.listen(3000, () => {
-    console.log(`Server running on port ${3000}`);
-});
+// server.listen(3000, () => {
+//     console.log(`Server running on port ${3000}`);
+// });
+
+app.listen(3000, () => {
+    console.log('Serving on port 3000')
+})
