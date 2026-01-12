@@ -21,14 +21,6 @@ const MongoStore = require('connect-mongo');
 const dbUrl = (process.env.DB_URL) || 'mongodb://localhost:27017/givex'
 
 mongoose.connect(dbUrl)
-
-const db = mongoose.connection
-db.on("error", console.error.bind(console, "connection error:"))
-db.once("open", () => {
-    console.log("Database connected")
-})
-
-mongoose.connect(dbUrl)
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -53,7 +45,7 @@ const store = MongoStore.create({
     client: mongoose.connection.getClient(),
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: sessionSecret
+        secret: sessionSecret || 'thisshouldbeasecret!'
     }
 });
 
@@ -62,9 +54,9 @@ store.on('error', function (e) {
     console.log('SESSION STORE ERROR', e)
 })
 
-const sessionCongif = {
+const sessionConfig = {
     store,
-    secret: sessionSecret,
+    secret: sessionSecret || 'thisshouldbeasecret!',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -74,7 +66,7 @@ const sessionCongif = {
     }
 }
 
-app.use(session(sessionCongif))
+app.use(session(sessionConfig))
 app.use(flash())
 
 app.use(passport.initialize())
