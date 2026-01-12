@@ -28,6 +28,11 @@ db.once("open", () => {
     console.log("Database connected")
 })
 
+mongoose.connect(dbUrl)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+
 const app = express()
 
 app.engine('ejs', ejsMate)
